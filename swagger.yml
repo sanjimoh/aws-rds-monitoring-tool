@@ -1,0 +1,85 @@
+swagger: "2.0"
+info:
+  title: AWS RDS Monitoring Tool (ARMT)
+  description: ARMT provides rest endpoints to help clients to get monitoring data from RDS instances in AWS cluster.
+  version: "1.0.0"
+
+basePath: /api/armt
+schemes:
+  - http
+
+paths:
+  /v1/rdss:
+    get:
+      summary: Gets all rds statistics running in the AWS cluster
+      tags:
+        - aws-rds-monitoring-tool
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      description: |
+        For example:
+        ```
+        GET /api/armt/v1/rdss
+        ```
+
+        Returns list of rds instances:
+        ```
+        [
+          {
+            "resourceId": "db-IXRXA2XS7KFFA6JWYYWFZEBJDE",
+            "availabilityZone": "us-east-1b",
+            "status" "available",
+          },
+          {
+            "name": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
+            "availabilityZone": "us-east-1c",
+            "status" "available",
+          },
+          ...
+        ]
+        ```
+      responses:
+        '200':
+          description: Fetching of all pod status is successful.
+          schema:
+            $ref: "#/definitions/RDSS"
+        '500':
+          description: Internal server error
+          schema:
+            $ref: "#/definitions/Error"
+
+definitions:
+  RDS:
+    type: object
+    description: An RDS instance
+    required:
+      - name
+      - availabilityZone
+      - status
+    properties:
+      name:
+        type: string
+        description: RDS DB name.
+      availabilityZone:
+        type: string
+        description: Availability zone.
+      status:
+        type: string
+        description: Status of RDS DB instance
+  RDSS:
+    type: array
+    description: Array of RDS items
+    items:
+      $ref: "#/definitions/RDS"
+  Error:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
