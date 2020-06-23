@@ -3,8 +3,13 @@
 package restapi
 
 import (
+	"aws-rds-monitoring-tool/controller"
+	"aws-rds-monitoring-tool/models"
 	"crypto/tls"
+	"github.com/go-openapi/swag"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -16,29 +21,39 @@ import (
 
 //go:generate swagger generate server --target ../../aws-rds-monitoring-tool --name Armt --spec ../swagger.yml
 
+var RMC *controller.RdsMonitoringController
+
 func configureFlags(api *operations.ArmtAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
 func configureAPI(api *operations.ArmtAPI) http.Handler {
+	var err error
+
 	// configure the api here
 	api.ServeError = errors.ServeError
-
-	// Set your custom logger if needed. Default one is log.Printf
-	// Expected interface func(string, ...interface{})
-	//
-	// Example:
-	// api.Logger = log.Printf
-
 	api.JSONConsumer = runtime.JSONConsumer()
-
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.AwsRdsMonitoringToolGetV1RdssHandler == nil {
-		api.AwsRdsMonitoringToolGetV1RdssHandler = aws_rds_monitoring_tool.GetV1RdssHandlerFunc(func(params aws_rds_monitoring_tool.GetV1RdssParams) middleware.Responder {
-			return middleware.NotImplemented("operation aws_rds_monitoring_tool.GetV1Rdss has not yet been implemented")
-		})
+	if RMC == nil {
+		RMC, err = controller.NewRdsMonitoringController()
+		if err != nil {
+			log.Printf("Failed to initialize aws rds tool service, error: %s", err)
+			os.Exit(1)
+		}
 	}
+
+	api.AwsRdsMonitoringToolGetV1RdssHandler = aws_rds_monitoring_tool.GetV1RdssHandlerFunc(func(params aws_rds_monitoring_tool.GetV1RdssParams) middleware.Responder {
+		rdss, err := RMC.MonitoringHandler.GetV1Rdss()
+		if err != nil {
+			return aws_rds_monitoring_tool.NewGetV1RdssInternalServerError().WithPayload(&models.Error{
+				Code:    swag.Int64(500),
+				Message: swag.String(err.Error()),
+			})
+		}
+
+		return aws_rds_monitoring_tool.NewGetV1RdssOK().WithPayload(rdss)
+	})
 
 	api.PreServerShutdown = func() {}
 
