@@ -55,6 +55,18 @@ func configureAPI(api *operations.ArmtAPI) http.Handler {
 		return aws_rds_monitoring_tool.NewGetV1RdssOK().WithPayload(rdss)
 	})
 
+	api.AwsRdsMonitoringToolPostV1RdsQueriesHandler = aws_rds_monitoring_tool.PostV1RdsQueriesHandlerFunc(func(params aws_rds_monitoring_tool.PostV1RdsQueriesParams) middleware.Responder {
+		err := RMC.MonitoringHandler.PostV1RdsQueries(params.RdsQueriesExecAttr)
+		if err != nil {
+			return aws_rds_monitoring_tool.NewPostV1RdsQueriesInternalServerError().WithPayload(&models.Error{
+				Code:    swag.Int64(500),
+				Message: swag.String(err.Error()),
+			})
+		}
+
+		return aws_rds_monitoring_tool.NewPostV1RdsQueriesOK()
+	})
+
 	api.PreServerShutdown = func() {}
 
 	api.ServerShutdown = func() {}

@@ -60,6 +60,55 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
+  /v1/rds/queries:
+    post:
+      summary: Execute a set of queries on a RDS instance
+      tags:
+        - aws-rds-monitoring-tool
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: RdsQueriesExecAttr
+          description: RDS query parameter.
+          schema:
+            $ref: '#/definitions/RdsQueriesExecAttr'
+      description: |
+        For example:
+        ```
+        POST /api/armt/v1/rds/queries
+        ```
+        Sample request body will be:
+        ```
+        {
+          "queries": [
+            {
+              "query": "string"
+            }
+          ],
+          "region": "string",
+          "dbUser": "string",
+          "dbName": "string",
+          "dbEndpoint": "string",
+          "iamArn": "string"
+        }
+        ```
+      responses:
+        '200':
+          description: RDS queries execution successfull.
+          schema:
+            $ref: '#/definitions/RdsQueriesExecAttr'
+        '400':
+          description: Bad Request, Unable to execute RDS queries.
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   RDS:
     type: object
@@ -91,6 +140,46 @@ definitions:
     description: Array of RDS items
     items:
       $ref: "#/definitions/RDS"
+  RdsQueriesExecAttr:
+    type: object
+    description: Attributes required for RDS queries executions.
+    required:
+      - region
+      - dbUser
+      - dbName
+      - dbEndpoint
+      - iamArn
+      - queries
+    properties:
+      queries:
+        type: array
+        description: Array of query
+        items:
+          $ref: "#/definitions/RDSQuery"
+      region:
+        type: string
+        description: AWS region
+      dbUser:
+        type: string
+        description: DB User
+      dbName:
+        type: string
+        description: DB Name
+      dbEndpoint:
+        type: string
+        description: DB endpoint
+      iamArn:
+        type: string
+        description: IAM arn
+  RDSQuery:
+    type: object
+    description: An RDS query
+    required:
+      - query
+    properties:
+      query:
+        type: string
+        description: An RDS query
   Error:
     type: object
     required:

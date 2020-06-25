@@ -29,6 +29,51 @@ func init() {
   },
   "basePath": "/api/armt",
   "paths": {
+    "/v1/rds/queries": {
+      "post": {
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nPOST /api/armt/v1/rds/queries\n` + "`" + `` + "`" + `` + "`" + `\nSample request body will be:\n` + "`" + `` + "`" + `` + "`" + `\n{\n  \"queries\": [\n    {\n      \"query\": \"string\"\n    }\n  ],\n  \"region\": \"string\",\n  \"dbUser\": \"string\",\n  \"dbName\": \"string\",\n  \"dbEndpoint\": \"string\",\n  \"iamArn\": \"string\"\n}\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "aws-rds-monitoring-tool"
+        ],
+        "summary": "Execute a set of queries on a RDS instance",
+        "parameters": [
+          {
+            "description": "RDS query parameter.",
+            "name": "RdsQueriesExecAttr",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RdsQueriesExecAttr"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RDS queries execution successfull.",
+            "schema": {
+              "$ref": "#/definitions/RdsQueriesExecAttr"
+            }
+          },
+          "400": {
+            "description": "Bad Request, Unable to execute RDS queries.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/v1/rdss": {
       "get": {
         "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"backing-up\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
@@ -116,11 +161,65 @@ func init() {
         }
       }
     },
+    "RDSQuery": {
+      "description": "An RDS query",
+      "type": "object",
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "query": {
+          "description": "An RDS query",
+          "type": "string"
+        }
+      }
+    },
     "RDSS": {
       "description": "Array of RDS items",
       "type": "array",
       "items": {
         "$ref": "#/definitions/RDS"
+      }
+    },
+    "RdsQueriesExecAttr": {
+      "description": "Attributes required for RDS queries executions.",
+      "type": "object",
+      "required": [
+        "region",
+        "dbUser",
+        "dbName",
+        "dbEndpoint",
+        "iamArn",
+        "queries"
+      ],
+      "properties": {
+        "dbEndpoint": {
+          "description": "DB endpoint",
+          "type": "string"
+        },
+        "dbName": {
+          "description": "DB Name",
+          "type": "string"
+        },
+        "dbUser": {
+          "description": "DB User",
+          "type": "string"
+        },
+        "iamArn": {
+          "description": "IAM arn",
+          "type": "string"
+        },
+        "queries": {
+          "description": "Array of query",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RDSQuery"
+          }
+        },
+        "region": {
+          "description": "AWS region",
+          "type": "string"
+        }
       }
     }
   }
@@ -137,6 +236,51 @@ func init() {
   },
   "basePath": "/api/armt",
   "paths": {
+    "/v1/rds/queries": {
+      "post": {
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nPOST /api/armt/v1/rds/queries\n` + "`" + `` + "`" + `` + "`" + `\nSample request body will be:\n` + "`" + `` + "`" + `` + "`" + `\n{\n  \"queries\": [\n    {\n      \"query\": \"string\"\n    }\n  ],\n  \"region\": \"string\",\n  \"dbUser\": \"string\",\n  \"dbName\": \"string\",\n  \"dbEndpoint\": \"string\",\n  \"iamArn\": \"string\"\n}\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "aws-rds-monitoring-tool"
+        ],
+        "summary": "Execute a set of queries on a RDS instance",
+        "parameters": [
+          {
+            "description": "RDS query parameter.",
+            "name": "RdsQueriesExecAttr",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RdsQueriesExecAttr"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RDS queries execution successfull.",
+            "schema": {
+              "$ref": "#/definitions/RdsQueriesExecAttr"
+            }
+          },
+          "400": {
+            "description": "Bad Request, Unable to execute RDS queries.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/v1/rdss": {
       "get": {
         "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"backing-up\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
@@ -224,11 +368,65 @@ func init() {
         }
       }
     },
+    "RDSQuery": {
+      "description": "An RDS query",
+      "type": "object",
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "query": {
+          "description": "An RDS query",
+          "type": "string"
+        }
+      }
+    },
     "RDSS": {
       "description": "Array of RDS items",
       "type": "array",
       "items": {
         "$ref": "#/definitions/RDS"
+      }
+    },
+    "RdsQueriesExecAttr": {
+      "description": "Attributes required for RDS queries executions.",
+      "type": "object",
+      "required": [
+        "region",
+        "dbUser",
+        "dbName",
+        "dbEndpoint",
+        "iamArn",
+        "queries"
+      ],
+      "properties": {
+        "dbEndpoint": {
+          "description": "DB endpoint",
+          "type": "string"
+        },
+        "dbName": {
+          "description": "DB Name",
+          "type": "string"
+        },
+        "dbUser": {
+          "description": "DB User",
+          "type": "string"
+        },
+        "iamArn": {
+          "description": "IAM arn",
+          "type": "string"
+        },
+        "queries": {
+          "description": "Array of query",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RDSQuery"
+          }
+        },
+        "region": {
+          "description": "AWS region",
+          "type": "string"
+        }
       }
     }
   }

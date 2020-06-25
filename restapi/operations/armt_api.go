@@ -46,6 +46,9 @@ func NewArmtAPI(spec *loads.Document) *ArmtAPI {
 		AwsRdsMonitoringToolGetV1RdssHandler: aws_rds_monitoring_tool.GetV1RdssHandlerFunc(func(params aws_rds_monitoring_tool.GetV1RdssParams) middleware.Responder {
 			return middleware.NotImplemented("operation aws_rds_monitoring_tool.GetV1Rdss has not yet been implemented")
 		}),
+		AwsRdsMonitoringToolPostV1RdsQueriesHandler: aws_rds_monitoring_tool.PostV1RdsQueriesHandlerFunc(func(params aws_rds_monitoring_tool.PostV1RdsQueriesParams) middleware.Responder {
+			return middleware.NotImplemented("operation aws_rds_monitoring_tool.PostV1RdsQueries has not yet been implemented")
+		}),
 	}
 }
 
@@ -81,6 +84,8 @@ type ArmtAPI struct {
 
 	// AwsRdsMonitoringToolGetV1RdssHandler sets the operation handler for the get v1 rdss operation
 	AwsRdsMonitoringToolGetV1RdssHandler aws_rds_monitoring_tool.GetV1RdssHandler
+	// AwsRdsMonitoringToolPostV1RdsQueriesHandler sets the operation handler for the post v1 rds queries operation
+	AwsRdsMonitoringToolPostV1RdsQueriesHandler aws_rds_monitoring_tool.PostV1RdsQueriesHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -149,6 +154,9 @@ func (o *ArmtAPI) Validate() error {
 
 	if o.AwsRdsMonitoringToolGetV1RdssHandler == nil {
 		unregistered = append(unregistered, "aws_rds_monitoring_tool.GetV1RdssHandler")
+	}
+	if o.AwsRdsMonitoringToolPostV1RdsQueriesHandler == nil {
+		unregistered = append(unregistered, "aws_rds_monitoring_tool.PostV1RdsQueriesHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -242,6 +250,10 @@ func (o *ArmtAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/v1/rdss"] = aws_rds_monitoring_tool.NewGetV1Rdss(o.context, o.AwsRdsMonitoringToolGetV1RdssHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/v1/rds/queries"] = aws_rds_monitoring_tool.NewPostV1RdsQueries(o.context, o.AwsRdsMonitoringToolPostV1RdsQueriesHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
