@@ -21,9 +21,9 @@ type RDS struct {
 	// Required: true
 	AvailabilityZone *string `json:"availabilityZone"`
 
-	// RDS DB name.
+	// RDS DB resource id.
 	// Required: true
-	Name *string `json:"name"`
+	ResourceID *string `json:"resourceId"`
 
 	// Status of RDS DB instance
 	// Required: true
@@ -38,7 +38,7 @@ func (m *RDS) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateName(formats); err != nil {
+	if err := m.validateResourceID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -61,9 +61,9 @@ func (m *RDS) validateAvailabilityZone(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *RDS) validateName(formats strfmt.Registry) error {
+func (m *RDS) validateResourceID(formats strfmt.Registry) error {
 
-	if err := validate.Required("name", "body", m.Name); err != nil {
+	if err := validate.Required("resourceId", "body", m.ResourceID); err != nil {
 		return err
 	}
 

@@ -31,7 +31,7 @@ func init() {
   "paths": {
     "/v1/rdss": {
       "get": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"name\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"availabilityZone\": \"us-east-1c\",\n    \"status\" \"available\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"availabilityZone\": \"us-east-1c\",\n    \"status\" \"available\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -79,7 +79,7 @@ func init() {
       "description": "An RDS instance",
       "type": "object",
       "required": [
-        "name",
+        "resourceId",
         "availabilityZone",
         "status"
       ],
@@ -88,8 +88,8 @@ func init() {
           "description": "Availability zone.",
           "type": "string"
         },
-        "name": {
-          "description": "RDS DB name.",
+        "resourceId": {
+          "description": "RDS DB resource id.",
           "type": "string"
         },
         "status": {
@@ -121,7 +121,7 @@ func init() {
   "paths": {
     "/v1/rdss": {
       "get": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"name\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"availabilityZone\": \"us-east-1c\",\n    \"status\" \"available\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"availabilityZone\": \"us-east-1c\",\n    \"status\" \"available\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -169,7 +169,7 @@ func init() {
       "description": "An RDS instance",
       "type": "object",
       "required": [
-        "name",
+        "resourceId",
         "availabilityZone",
         "status"
       ],
@@ -178,8 +178,8 @@ func init() {
           "description": "Availability zone.",
           "type": "string"
         },
-        "name": {
-          "description": "RDS DB name.",
+        "resourceId": {
+          "description": "RDS DB resource id.",
           "type": "string"
         },
         "status": {

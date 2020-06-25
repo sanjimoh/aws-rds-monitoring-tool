@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"aws-rds-monitoring-tool/configuration"
 	"aws-rds-monitoring-tool/handler"
 	"fmt"
 )
@@ -10,7 +11,12 @@ type RdsMonitoringController struct {
 }
 
 func NewRdsMonitoringController() (*RdsMonitoringController, error) {
-	awsRdsClient, err := handler.NewAwsRdsClient()
+	config, err := configuration.ParseEnvConfiguration()
+	if err != nil {
+		return nil, fmt.Errorf("Could not parse aws rds monitoring tool service config: %s", err)
+	}
+
+	awsRdsClient, err := handler.NewAwsRdsClient(config)
 	if err != nil {
 		return nil, fmt.Errorf("Creating aws client failed: %v", err)
 	}

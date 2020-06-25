@@ -47,7 +47,7 @@ Returns list of rds instances:
     "status" "available",
   },
   {
-    "name": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
+    "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
     "availabilityZone": "us-east-1c",
     "status" "available",
   },

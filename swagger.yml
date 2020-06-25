@@ -33,7 +33,7 @@ paths:
             "status" "available",
           },
           {
-            "name": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
+            "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
             "availabilityZone": "us-east-1c",
             "status" "available",
           },
@@ -55,13 +55,13 @@ definitions:
     type: object
     description: An RDS instance
     required:
-      - name
+      - resourceId
       - availabilityZone
       - status
     properties:
-      name:
+      resourceId:
         type: string
-        description: RDS DB name.
+        description: RDS DB resource id.
       availabilityZone:
         type: string
         description: Availability zone.
