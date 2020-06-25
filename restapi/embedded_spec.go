@@ -31,7 +31,7 @@ func init() {
   "paths": {
     "/v1/rdss": {
       "get": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"availabilityZone\": \"us-east-1c\",\n    \"status\" \"available\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"backing-up\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -42,6 +42,14 @@ func init() {
           "aws-rds-monitoring-tool"
         ],
         "summary": "Gets all rds statistics running in the AWS cluster",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Pass an aws region for which RDS instance status is required to be monitored. If region is not passed, then the default AWS region passed in env is taken.",
+            "name": "region",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Fetching of all pod status is successful.",
@@ -80,20 +88,30 @@ func init() {
       "type": "object",
       "required": [
         "resourceId",
+        "clusterIdentifier",
+        "instanceIdentifier",
         "availabilityZone",
         "status"
       ],
       "properties": {
         "availabilityZone": {
-          "description": "Availability zone.",
+          "description": "Specifies the name of the Availability Zone the DB instance is located in.",
+          "type": "string"
+        },
+        "clusterIdentifier": {
+          "description": "If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.",
+          "type": "string"
+        },
+        "instanceIdentifier": {
+          "description": "Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.",
           "type": "string"
         },
         "resourceId": {
-          "description": "RDS DB resource id.",
+          "description": "The AWS Region-unique, immutable identifier for the DB instance.",
           "type": "string"
         },
         "status": {
-          "description": "Status of RDS DB instance",
+          "description": "The status of a DB instance indicates the health of the DB instance. More refer here - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.Status.html",
           "type": "string"
         }
       }
@@ -121,7 +139,7 @@ func init() {
   "paths": {
     "/v1/rdss": {
       "get": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"availabilityZone\": \"us-east-1c\",\n    \"status\" \"available\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"backing-up\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -132,6 +150,14 @@ func init() {
           "aws-rds-monitoring-tool"
         ],
         "summary": "Gets all rds statistics running in the AWS cluster",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Pass an aws region for which RDS instance status is required to be monitored. If region is not passed, then the default AWS region passed in env is taken.",
+            "name": "region",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Fetching of all pod status is successful.",
@@ -170,20 +196,30 @@ func init() {
       "type": "object",
       "required": [
         "resourceId",
+        "clusterIdentifier",
+        "instanceIdentifier",
         "availabilityZone",
         "status"
       ],
       "properties": {
         "availabilityZone": {
-          "description": "Availability zone.",
+          "description": "Specifies the name of the Availability Zone the DB instance is located in.",
+          "type": "string"
+        },
+        "clusterIdentifier": {
+          "description": "If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.",
+          "type": "string"
+        },
+        "instanceIdentifier": {
+          "description": "Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.",
           "type": "string"
         },
         "resourceId": {
-          "description": "RDS DB resource id.",
+          "description": "The AWS Region-unique, immutable identifier for the DB instance.",
           "type": "string"
         },
         "status": {
-          "description": "Status of RDS DB instance",
+          "description": "The status of a DB instance indicates the health of the DB instance. More refer here - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.Status.html",
           "type": "string"
         }
       }

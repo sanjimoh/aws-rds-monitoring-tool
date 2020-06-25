@@ -13,7 +13,11 @@ import (
 
 // GetV1RdssURL generates an URL for the get v1 rdss operation
 type GetV1RdssURL struct {
+	Region *string
+
 	_basePath string
+	// avoid unkeyed usage
+	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
@@ -42,6 +46,18 @@ func (o *GetV1RdssURL) Build() (*url.URL, error) {
 		_basePath = "/api/armt"
 	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
+
+	qs := make(url.Values)
+
+	var regionQ string
+	if o.Region != nil {
+		regionQ = *o.Region
+	}
+	if regionQ != "" {
+		qs.Set("region", regionQ)
+	}
+
+	_result.RawQuery = qs.Encode()
 
 	return &_result, nil
 }

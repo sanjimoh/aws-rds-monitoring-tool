@@ -35,7 +35,7 @@ Gets all rds statistics running in the AWS cluster
 
 For example:
 ```
-GET /api/armt/v1/rdss
+GET /api/armt/v1/rdss?region=us-east-1b
 ```
 
 Returns list of rds instances:
@@ -43,13 +43,17 @@ Returns list of rds instances:
 [
   {
     "resourceId": "db-IXRXA2XS7KFFA6JWYYWFZEBJDE",
+    "clusterIdentifier": "",
+    "instanceIdentifier": "mysqldb",
     "availabilityZone": "us-east-1b",
     "status" "available",
   },
   {
     "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
-    "availabilityZone": "us-east-1c",
-    "status" "available",
+    "clusterIdentifier": "",
+    "instanceIdentifier": "mysqldb",
+    "availabilityZone": "us-east-1b",
+    "status" "backing-up",
   },
   ...
 ]

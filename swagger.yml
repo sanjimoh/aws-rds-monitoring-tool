@@ -18,10 +18,16 @@ paths:
         - application/json
       consumes:
         - application/json
+      parameters:
+        - in: query
+          name: region
+          type: string
+          required: false
+          description: Pass an aws region for which RDS instance status is required to be monitored. If region is not passed, then the default AWS region passed in env is taken.
       description: |
         For example:
         ```
-        GET /api/armt/v1/rdss
+        GET /api/armt/v1/rdss?region=us-east-1b
         ```
 
         Returns list of rds instances:
@@ -29,13 +35,17 @@ paths:
         [
           {
             "resourceId": "db-IXRXA2XS7KFFA6JWYYWFZEBJDE",
+            "clusterIdentifier": "",
+            "instanceIdentifier": "mysqldb",
             "availabilityZone": "us-east-1b",
             "status" "available",
           },
           {
             "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
-            "availabilityZone": "us-east-1c",
-            "status" "available",
+            "clusterIdentifier": "",
+            "instanceIdentifier": "mysqldb",
+            "availabilityZone": "us-east-1b",
+            "status" "backing-up",
           },
           ...
         ]
@@ -56,18 +66,26 @@ definitions:
     description: An RDS instance
     required:
       - resourceId
+      - clusterIdentifier
+      - instanceIdentifier
       - availabilityZone
       - status
     properties:
       resourceId:
         type: string
-        description: RDS DB resource id.
+        description: The AWS Region-unique, immutable identifier for the DB instance.
+      clusterIdentifier:
+        type: string
+        description: If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.
+      instanceIdentifier:
+        type: string
+        description: Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.
       availabilityZone:
         type: string
-        description: Availability zone.
+        description: Specifies the name of the Availability Zone the DB instance is located in.
       status:
         type: string
-        description: Status of RDS DB instance
+        description: The status of a DB instance indicates the health of the DB instance. More refer here - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.Status.html
   RDSS:
     type: array
     description: Array of RDS items

@@ -9,7 +9,9 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
 )
 
 // NewGetV1RdssParams creates a new GetV1RdssParams object
@@ -27,6 +29,11 @@ type GetV1RdssParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
+
+	/*Pass an aws region for which RDS instance status is required to be monitored. If region is not passed, then the default AWS region passed in env is taken.
+	  In: query
+	*/
+	Region *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -38,8 +45,33 @@ func (o *GetV1RdssParams) BindRequest(r *http.Request, route *middleware.Matched
 
 	o.HTTPRequest = r
 
+	qs := runtime.Values(r.URL.Query())
+
+	qRegion, qhkRegion, _ := qs.GetOK("region")
+	if err := o.bindRegion(qRegion, qhkRegion, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+// bindRegion binds and validates parameter Region from query.
+func (o *GetV1RdssParams) bindRegion(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: false
+	// AllowEmptyValue: false
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.Region = &raw
+
 	return nil
 }

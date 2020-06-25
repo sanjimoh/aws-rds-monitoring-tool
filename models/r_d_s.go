@@ -17,15 +17,23 @@ import (
 // swagger:model RDS
 type RDS struct {
 
-	// Availability zone.
+	// Specifies the name of the Availability Zone the DB instance is located in.
 	// Required: true
 	AvailabilityZone *string `json:"availabilityZone"`
 
-	// RDS DB resource id.
+	// If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.
+	// Required: true
+	ClusterIdentifier *string `json:"clusterIdentifier"`
+
+	// Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.
+	// Required: true
+	InstanceIdentifier *string `json:"instanceIdentifier"`
+
+	// The AWS Region-unique, immutable identifier for the DB instance.
 	// Required: true
 	ResourceID *string `json:"resourceId"`
 
-	// Status of RDS DB instance
+	// The status of a DB instance indicates the health of the DB instance. More refer here - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.Status.html
 	// Required: true
 	Status *string `json:"status"`
 }
@@ -35,6 +43,14 @@ func (m *RDS) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateAvailabilityZone(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateClusterIdentifier(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateInstanceIdentifier(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -55,6 +71,24 @@ func (m *RDS) Validate(formats strfmt.Registry) error {
 func (m *RDS) validateAvailabilityZone(formats strfmt.Registry) error {
 
 	if err := validate.Required("availabilityZone", "body", m.AvailabilityZone); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RDS) validateClusterIdentifier(formats strfmt.Registry) error {
+
+	if err := validate.Required("clusterIdentifier", "body", m.ClusterIdentifier); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RDS) validateInstanceIdentifier(formats strfmt.Registry) error {
+
+	if err := validate.Required("instanceIdentifier", "body", m.InstanceIdentifier); err != nil {
 		return err
 	}
 

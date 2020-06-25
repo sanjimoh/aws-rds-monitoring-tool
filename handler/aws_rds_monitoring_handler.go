@@ -13,8 +13,8 @@ func NewK8sMonitoringHandler(awsClient *AwsRdsClient) (*RdsMonitoringHandler, er
 	return &RdsMonitoringHandler{awsRdsClient: awsClient}, nil
 }
 
-func (rmh *RdsMonitoringHandler) GetV1Rdss() (rdss models.RDSS, err error) {
-	rdss, err = rmh.awsRdsClient.GetAllRds()
+func (rmh *RdsMonitoringHandler) GetV1Rdss(awsRegion string) (rdss models.RDSS, err error) {
+	rdss, err = rmh.awsRdsClient.GetAllRds(awsRegion)
 	if err != nil {
 		return nil, fmt.Errorf("Fetching rds instances failed: %v", err)
 	}

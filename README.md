@@ -4,25 +4,29 @@ AWS RDS monitoring tool is meant for monitoring RDS resources in a cluster. It i
 
 The existing codebase - (more to come..)
 * Exposes a rest endpoint to it's client using which could return RDS instances including its current status in the 
-  cluster.
+  cluster. If region is not passed, then the default AWS region passed in env is taken.
   
 ## Rest interface definition and payload
 
 ```
-GET /api/armt/v1/rdss
+GET /api/armt/v1/rdss?region=us-east-1b
 ```
 Returns list of rds instances:
 ```
 [
   {
     "resourceId": "db-IXRXA2XS7KFFA6JWYYWFZEBJDE",
+    "clusterIdentifier": "",
+    "instanceIdentifier": "mysqldb",
     "availabilityZone": "us-east-1b",
     "status" "available",
   },
   {
-    "name": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
-    "availabilityZone": "us-east-1c",
-    "status" "available",
+    "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
+    "clusterIdentifier": "",
+    "instanceIdentifier": "mysqldb",
+    "availabilityZone": "us-east-1b",
+    "status" "backing-up",
   },
   ...
 ]

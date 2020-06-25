@@ -10,7 +10,8 @@ import (
 )
 
 type AwsRdsClient struct {
-	rds *rds.RDS
+	awsRegion string
+	rds       *rds.RDS
 }
 
 func NewAwsRdsClient(config *configuration.AwsEnvConfig) (*AwsRdsClient, error) {
@@ -18,13 +19,26 @@ func NewAwsRdsClient(config *configuration.AwsEnvConfig) (*AwsRdsClient, error) 
 		Region: &config.AwsRegion}))
 	svc := rds.New(awsSession)
 
-	return &AwsRdsClient{rds: svc}, nil
+	return &AwsRdsClient{rds: svc, awsRegion: config.AwsRegion}, nil
 }
 
-func (kc *AwsRdsClient) GetAllRds() (rdss models.RDSS, err error) {
-	rdsInstances, err := kc.rds.DescribeDBInstances(nil)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to get all rds instances: %v", err)
+func (kc *AwsRdsClient) GetAllRds(awsRegion string) (rdss models.RDSS, err error) {
+	var rdsInstances *rds.DescribeDBInstancesOutput
+
+	if awsRegion != kc.awsRegion {
+		awsSession := session.Must(session.NewSession(&aws.Config{
+			Region: &awsRegion}))
+		rds := rds.New(awsSession)
+
+		rdsInstances, err = rds.DescribeDBInstances(nil)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to get all rds instances: %v", err)
+		}
+	} else {
+		rdsInstances, err = kc.rds.DescribeDBInstances(nil)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to get all rds instances: %v", err)
+		}
 	}
 
 	rdsDbInstances := rdsInstances.DBInstances
@@ -34,9 +48,11 @@ func (kc *AwsRdsClient) GetAllRds() (rdss models.RDSS, err error) {
 
 	for _, rdsInstance := range rdsDbInstances {
 		rds := &models.RDS{
-			AvailabilityZone: rdsInstance.AvailabilityZone,
-			ResourceID:       rdsInstance.DbiResourceId,
-			Status:           rdsInstance.DBInstanceStatus,
+			AvailabilityZone:   rdsInstance.AvailabilityZone,
+			ClusterIdentifier:  rdsInstance.DBClusterIdentifier,
+			InstanceIdentifier: rdsInstance.DBInstanceIdentifier,
+			ResourceID:         rdsInstance.DbiResourceId,
+			Status:             rdsInstance.DBInstanceStatus,
 		}
 		rdss = append(rdss, rds)
 	}
