@@ -60,7 +60,23 @@ Sample request body will be:
 }
 ```
 
+## How to run
+Update Makefile's "run" target and provide the following inputs -
+```
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
+* AWS_REGION
+```
 
+After you provided the above details, then you are good to run the application by simply executing -
+```
+make run
+```
+
+Now, you can make calls to the API exposed by this application - (for example)
+```
+curl -X GET "http://127.0.0.1:30001/api/armt/v1/rdss?region=ap-south-1"
+```
 ## Technology Selection
 * [Golang](https://golang.org/) used for implementation.
 * [Go-Swagger](https://github.com/go-swagger/go-swagger) is used for rest service Swaggerization.
