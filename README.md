@@ -10,25 +10,33 @@ The existing codebase - (more to come..)
 ## Rest interface definition and payload
 * Get all RDS instances and its status:
 ```
-GET /api/armt/v1/rdss?region=us-east-1b
+GET /api/armt/v1/rdss?region=ap-south-1
 ```
 Returns list of rds instances:
 ```
 [
-  {
-    "resourceId": "db-IXRXA2XS7KFFA6JWYYWFZEBJDE",
-    "clusterIdentifier": "",
-    "instanceIdentifier": "mysqldb",
-    "availabilityZone": "us-east-1b",
-    "status" "available",
-  },
-  {
-    "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
-    "clusterIdentifier": "",
-    "instanceIdentifier": "mysqldb",
-    "availabilityZone": "us-east-1b",
-    "status" "backing-up",
-  },
+   {
+          "availabilityZone": "ap-south-1b",
+          "clusterIdentifier": null,
+          "dbInstanceClass": "db.t2.micro",
+          "dbName": null,
+          "engine": "mysql",
+          "engineVersion": "8.0.16",
+          "instanceIdentifier": "sanjit-database-1",
+          "resourceId": "db-PX346I7MRIQVANIZ5XE6UB5YQY",
+          "status": "available"
+      },
+      {
+          "availabilityZone": "ap-south-1b",
+          "clusterIdentifier": null,
+          "dbInstanceClass": "db.t2.micro",
+          "dbName": null,
+          "engine": "mariadb",
+          "engineVersion": "10.3.13",
+          "instanceIdentifier": "sanjit-database-2",
+          "resourceId": "db-AIET3SIESWBGKV6FGF2VQC4MGY",
+          "status": "available"
+      },
   ...
 ]
 ```

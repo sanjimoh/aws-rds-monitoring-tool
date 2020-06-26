@@ -34,19 +34,27 @@ paths:
         ```
         [
           {
-            "resourceId": "db-IXRXA2XS7KFFA6JWYYWFZEBJDE",
-            "clusterIdentifier": "",
-            "instanceIdentifier": "mysqldb",
-            "availabilityZone": "us-east-1b",
-            "status" "available",
-          },
-          {
-            "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
-            "clusterIdentifier": "",
-            "instanceIdentifier": "mysqldb",
-            "availabilityZone": "us-east-1b",
-            "status" "backing-up",
-          },
+                    "availabilityZone": "ap-south-1b",
+                    "clusterIdentifier": null,
+                    "dbInstanceClass": "db.t2.micro",
+                    "dbName": null,
+                    "engine": "mysql",
+                    "engineVersion": "8.0.16",
+                    "instanceIdentifier": "sanjit-database-1",
+                    "resourceId": "db-PX346I7MRIQVANIZ5XE6UB5YQY",
+                    "status": "available"
+                },
+                {
+                    "availabilityZone": "ap-south-1b",
+                    "clusterIdentifier": null,
+                    "dbInstanceClass": "db.t2.micro",
+                    "dbName": null,
+                    "engine": "mariadb",
+                    "engineVersion": "10.3.13",
+                    "instanceIdentifier": "sanjit-database-2",
+                    "resourceId": "db-AIET3SIESWBGKV6FGF2VQC4MGY",
+                    "status": "available"
+                },
           ...
         ]
         ```
@@ -118,6 +126,10 @@ definitions:
       - clusterIdentifier
       - instanceIdentifier
       - availabilityZone
+      - dbInstanceClass
+      - dbName
+      - engine
+      - engineVersion
       - status
     properties:
       resourceId:
@@ -132,6 +144,18 @@ definitions:
       availabilityZone:
         type: string
         description: Specifies the name of the Availability Zone the DB instance is located in.
+      dbInstanceClass:
+        type: string
+        description: Contains the name of the compute and memory capacity class of the DB instance.
+      dbName:
+        type: string
+        description: Contains the name of the initial database of this instance that was provided at the time of create.
+      engine:
+        type: string
+        description: Provides the name of the database engine to be used for this DB instance.
+      engineVersion:
+        type: string
+        description: Indicates the database engine version.
       status:
         type: string
         description: The status of a DB instance indicates the health of the DB instance. More refer here - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.Status.html

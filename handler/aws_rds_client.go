@@ -29,7 +29,12 @@ func NewAwsRdsClient(config *configuration.AwsEnvConfig) (*AwsRdsClient, error) 
 func (kc *AwsRdsClient) GetAllRds(awsRegion string) (rdss models.RDSS, err error) {
 	var rdsInstances *rds.DescribeDBInstancesOutput
 
-	if awsRegion != kc.awsRegion {
+	if len(awsRegion) == 0 || awsRegion == kc.awsRegion {
+		rdsInstances, err = kc.rds.DescribeDBInstances(nil)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to get all rds instances: %v", err)
+		}
+	} else if awsRegion != kc.awsRegion {
 		awsSession := session.Must(session.NewSession(&aws.Config{
 			Region: &awsRegion}))
 		rds := rds.New(awsSession)
@@ -38,22 +43,17 @@ func (kc *AwsRdsClient) GetAllRds(awsRegion string) (rdss models.RDSS, err error
 		if err != nil {
 			return nil, fmt.Errorf("Failed to get all rds instances: %v", err)
 		}
-	} else {
-		rdsInstances, err = kc.rds.DescribeDBInstances(nil)
-		if err != nil {
-			return nil, fmt.Errorf("Failed to get all rds instances: %v", err)
-		}
 	}
 
 	rdsDbInstances := rdsInstances.DBInstances
-	if len(rdsDbInstances) > 0 {
-		rdss = make(models.RDSS, len(rdsDbInstances))
-	}
-
 	for _, rdsInstance := range rdsDbInstances {
 		rds := &models.RDS{
 			AvailabilityZone:   rdsInstance.AvailabilityZone,
 			ClusterIdentifier:  rdsInstance.DBClusterIdentifier,
+			DbInstanceClass:    rdsInstance.DBInstanceClass,
+			DbName:             rdsInstance.DBName,
+			Engine:             rdsInstance.Engine,
+			EngineVersion:      rdsInstance.EngineVersion,
 			InstanceIdentifier: rdsInstance.DBInstanceIdentifier,
 			ResourceID:         rdsInstance.DbiResourceId,
 			Status:             rdsInstance.DBInstanceStatus,

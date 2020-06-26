@@ -44,7 +44,12 @@ func configureAPI(api *operations.ArmtAPI) http.Handler {
 	}
 
 	api.AwsRdsMonitoringToolGetV1RdssHandler = aws_rds_monitoring_tool.GetV1RdssHandlerFunc(func(params aws_rds_monitoring_tool.GetV1RdssParams) middleware.Responder {
-		rdss, err := RMC.MonitoringHandler.GetV1Rdss(*params.Region)
+		var region string
+		if params.Region != nil {
+			region = *params.Region
+		}
+
+		rdss, err := RMC.MonitoringHandler.GetV1Rdss(region)
 		if err != nil {
 			return aws_rds_monitoring_tool.NewGetV1RdssInternalServerError().WithPayload(&models.Error{
 				Code:    swag.Int64(500),

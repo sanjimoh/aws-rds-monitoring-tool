@@ -25,6 +25,22 @@ type RDS struct {
 	// Required: true
 	ClusterIdentifier *string `json:"clusterIdentifier"`
 
+	// Contains the name of the compute and memory capacity class of the DB instance.
+	// Required: true
+	DbInstanceClass *string `json:"dbInstanceClass"`
+
+	// Contains the name of the initial database of this instance that was provided at the time of create.
+	// Required: true
+	DbName *string `json:"dbName"`
+
+	// Provides the name of the database engine to be used for this DB instance.
+	// Required: true
+	Engine *string `json:"engine"`
+
+	// Indicates the database engine version.
+	// Required: true
+	EngineVersion *string `json:"engineVersion"`
+
 	// Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.
 	// Required: true
 	InstanceIdentifier *string `json:"instanceIdentifier"`
@@ -47,6 +63,22 @@ func (m *RDS) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateClusterIdentifier(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateDbInstanceClass(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateDbName(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateEngine(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateEngineVersion(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -80,6 +112,42 @@ func (m *RDS) validateAvailabilityZone(formats strfmt.Registry) error {
 func (m *RDS) validateClusterIdentifier(formats strfmt.Registry) error {
 
 	if err := validate.Required("clusterIdentifier", "body", m.ClusterIdentifier); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RDS) validateDbInstanceClass(formats strfmt.Registry) error {
+
+	if err := validate.Required("dbInstanceClass", "body", m.DbInstanceClass); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RDS) validateDbName(formats strfmt.Registry) error {
+
+	if err := validate.Required("dbName", "body", m.DbName); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RDS) validateEngine(formats strfmt.Registry) error {
+
+	if err := validate.Required("engine", "body", m.Engine); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RDS) validateEngineVersion(formats strfmt.Registry) error {
+
+	if err := validate.Required("engineVersion", "body", m.EngineVersion); err != nil {
 		return err
 	}
 

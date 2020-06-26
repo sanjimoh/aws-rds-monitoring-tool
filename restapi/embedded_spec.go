@@ -136,6 +136,10 @@ func init() {
         "clusterIdentifier",
         "instanceIdentifier",
         "availabilityZone",
+        "dbInstanceClass",
+        "dbName",
+        "engine",
+        "engineVersion",
         "status"
       ],
       "properties": {
@@ -145,6 +149,22 @@ func init() {
         },
         "clusterIdentifier": {
           "description": "If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.",
+          "type": "string"
+        },
+        "dbInstanceClass": {
+          "description": "Contains the name of the compute and memory capacity class of the DB instance.",
+          "type": "string"
+        },
+        "dbName": {
+          "description": "Contains the name of the initial database of this instance that was provided at the time of create.",
+          "type": "string"
+        },
+        "engine": {
+          "description": "Provides the name of the database engine to be used for this DB instance.",
+          "type": "string"
+        },
+        "engineVersion": {
+          "description": "Indicates the database engine version.",
           "type": "string"
         },
         "instanceIdentifier": {
@@ -343,6 +363,10 @@ func init() {
         "clusterIdentifier",
         "instanceIdentifier",
         "availabilityZone",
+        "dbInstanceClass",
+        "dbName",
+        "engine",
+        "engineVersion",
         "status"
       ],
       "properties": {
@@ -352,6 +376,22 @@ func init() {
         },
         "clusterIdentifier": {
           "description": "If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.",
+          "type": "string"
+        },
+        "dbInstanceClass": {
+          "description": "Contains the name of the compute and memory capacity class of the DB instance.",
+          "type": "string"
+        },
+        "dbName": {
+          "description": "Contains the name of the initial database of this instance that was provided at the time of create.",
+          "type": "string"
+        },
+        "engine": {
+          "description": "Provides the name of the database engine to be used for this DB instance.",
+          "type": "string"
+        },
+        "engineVersion": {
+          "description": "Indicates the database engine version.",
           "type": "string"
         },
         "instanceIdentifier": {
