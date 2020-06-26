@@ -14,16 +14,17 @@ import (
 )
 
 type AwsRdsClient struct {
-	awsRegion string
-	rds       *rds.RDS
+	awsRegion  string
+	awsSession *session.Session
+	rds        *rds.RDS
 }
 
 func NewAwsRdsClient(config *configuration.AwsEnvConfig) (*AwsRdsClient, error) {
-	awsSession := session.Must(session.NewSession(&aws.Config{
+	session := session.Must(session.NewSession(&aws.Config{
 		Region: &config.AwsRegion}))
-	svc := rds.New(awsSession)
+	svc := rds.New(session)
 
-	return &AwsRdsClient{rds: svc, awsRegion: config.AwsRegion}, nil
+	return &AwsRdsClient{rds: svc, awsRegion: config.AwsRegion, awsSession: session}, nil
 }
 
 func (kc *AwsRdsClient) GetAllRds(awsRegion string) (rdss models.RDSS, err error) {
@@ -65,8 +66,8 @@ func (kc *AwsRdsClient) GetAllRds(awsRegion string) (rdss models.RDSS, err error
 }
 
 func (kc *AwsRdsClient) ExecuteQueries(region string, dbUser string, dbName string, dbEndpoint string, iamArn string, queries []string) error {
-	awsSession := session.Must(session.NewSession(&aws.Config{Region: &region}))
-	credentials := stscreds.NewCredentials(awsSession, iamArn)
+	session := session.Must(session.NewSession(&aws.Config{Region: &region}))
+	credentials := stscreds.NewCredentials(session, iamArn)
 
 	token, err := rdsutils.BuildAuthToken(dbEndpoint, region, dbUser, credentials)
 	if err != nil {

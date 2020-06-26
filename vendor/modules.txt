@@ -80,9 +80,6 @@ github.com/go-openapi/swag
 # github.com/go-openapi/validate v0.19.10
 ## explicit
 github.com/go-openapi/validate
-# github.com/go-sql-driver/mysql v1.5.0
-## explicit
-github.com/go-sql-driver/mysql
 # github.com/go-stack/stack v1.8.0
 github.com/go-stack/stack
 # github.com/jessevdk/go-flags v1.4.0
