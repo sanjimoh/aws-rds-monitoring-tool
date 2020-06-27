@@ -37,7 +37,7 @@ paths:
                     "availabilityZone": "ap-south-1b",
                     "clusterIdentifier": null,
                     "dbInstanceClass": "db.t2.micro",
-                    "dbName": null,
+                    "dbName": sanjitdb,
                     "engine": "mysql",
                     "engineVersion": "8.0.16",
                     "instanceIdentifier": "sanjit-database-1",
@@ -45,17 +45,17 @@ paths:
                     "status": "available"
                 },
                 {
-                    "availabilityZone": "ap-south-1b",
-                    "clusterIdentifier": null,
-                    "dbInstanceClass": "db.t2.micro",
-                    "dbName": null,
-                    "engine": "mariadb",
-                    "engineVersion": "10.3.13",
-                    "instanceIdentifier": "sanjit-database-2",
-                    "resourceId": "db-AIET3SIESWBGKV6FGF2VQC4MGY",
-                    "status": "available"
+                  "availabilityZone": "ap-east-1b",
+                  "clusterIdentifier": null,
+                  "dbInstanceClass": "db.t3.micro",
+                  "dbName": "sanjitdb2",
+                  "engine": "mysql",
+                  "engineVersion": "8.0.19",
+                  "instanceIdentifier": "sanjit-database-2",
+                  "resourceId": "db-Z5SH5B7G6MF3STWPY75S6RWGY4",
+                  "status": "creating"
                 },
-          ...
+                ...
         ]
         ```
       responses:
@@ -92,15 +92,12 @@ paths:
         ```
         {
           "queries": [
-            {
-              "query": "string"
-            }
+          {
+            "query": "show tables;"
+          }
           ],
-          "region": "string",
-          "dbUser": "string",
-          "dbName": "string",
-          "dbEndpoint": "string",
-          "iamArn": "string"
+          "dbName": "sanjitdb2",
+          "dbEndpoint": "sanjit-database-2.rds.amazonaws.com"
         }
         ```
       responses:
@@ -168,11 +165,8 @@ definitions:
     type: object
     description: Attributes required for RDS queries executions.
     required:
-      - region
-      - dbUser
       - dbName
       - dbEndpoint
-      - iamArn
       - queries
     properties:
       queries:
@@ -180,21 +174,12 @@ definitions:
         description: Array of query
         items:
           $ref: "#/definitions/RDSQuery"
-      region:
-        type: string
-        description: AWS region
-      dbUser:
-        type: string
-        description: DB User
       dbName:
         type: string
         description: DB Name
       dbEndpoint:
         type: string
         description: DB endpoint
-      iamArn:
-        type: string
-        description: IAM arn
   RDSQuery:
     type: object
     description: An RDS query

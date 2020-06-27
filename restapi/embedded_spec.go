@@ -31,7 +31,7 @@ func init() {
   "paths": {
     "/v1/rds/queries": {
       "post": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nPOST /api/armt/v1/rds/queries\n` + "`" + `` + "`" + `` + "`" + `\nSample request body will be:\n` + "`" + `` + "`" + `` + "`" + `\n{\n  \"queries\": [\n    {\n      \"query\": \"string\"\n    }\n  ],\n  \"region\": \"string\",\n  \"dbUser\": \"string\",\n  \"dbName\": \"string\",\n  \"dbEndpoint\": \"string\",\n  \"iamArn\": \"string\"\n}\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nPOST /api/armt/v1/rds/queries\n` + "`" + `` + "`" + `` + "`" + `\nSample request body will be:\n` + "`" + `` + "`" + `` + "`" + `\n{\n  \"queries\": [\n    {\n      \"query\": \"string\"\n    }\n  ],\n  \"dbName\": \"string\",\n  \"dbEndpoint\": \"string\"\n}\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -76,7 +76,7 @@ func init() {
     },
     "/v1/rdss": {
       "get": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"backing-up\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n            \"availabilityZone\": \"ap-south-1b\",\n            \"clusterIdentifier\": null,\n            \"dbInstanceClass\": \"db.t2.micro\",\n            \"dbName\": sanjitdb,\n            \"engine\": \"mysql\",\n            \"engineVersion\": \"8.0.16\",\n            \"instanceIdentifier\": \"sanjit-database-1\",\n            \"resourceId\": \"db-PX346I7MRIQVANIZ5XE6UB5YQY\",\n            \"status\": \"available\"\n        },\n        {\n          \"availabilityZone\": \"ap-east-1b\",\n          \"clusterIdentifier\": null,\n          \"dbInstanceClass\": \"db.t3.micro\",\n          \"dbName\": \"sanjitdb2\",\n          \"engine\": \"mysql\",\n          \"engineVersion\": \"8.0.19\",\n          \"instanceIdentifier\": \"sanjit-database-2\",\n          \"resourceId\": \"db-Z5SH5B7G6MF3STWPY75S6RWGY4\",\n          \"status\": \"creating\"\n        },\n        ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -205,11 +205,8 @@ func init() {
       "description": "Attributes required for RDS queries executions.",
       "type": "object",
       "required": [
-        "region",
-        "dbUser",
         "dbName",
         "dbEndpoint",
-        "iamArn",
         "queries"
       ],
       "properties": {
@@ -221,24 +218,12 @@ func init() {
           "description": "DB Name",
           "type": "string"
         },
-        "dbUser": {
-          "description": "DB User",
-          "type": "string"
-        },
-        "iamArn": {
-          "description": "IAM arn",
-          "type": "string"
-        },
         "queries": {
           "description": "Array of query",
           "type": "array",
           "items": {
             "$ref": "#/definitions/RDSQuery"
           }
-        },
-        "region": {
-          "description": "AWS region",
-          "type": "string"
         }
       }
     }
@@ -258,7 +243,7 @@ func init() {
   "paths": {
     "/v1/rds/queries": {
       "post": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nPOST /api/armt/v1/rds/queries\n` + "`" + `` + "`" + `` + "`" + `\nSample request body will be:\n` + "`" + `` + "`" + `` + "`" + `\n{\n  \"queries\": [\n    {\n      \"query\": \"string\"\n    }\n  ],\n  \"region\": \"string\",\n  \"dbUser\": \"string\",\n  \"dbName\": \"string\",\n  \"dbEndpoint\": \"string\",\n  \"iamArn\": \"string\"\n}\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nPOST /api/armt/v1/rds/queries\n` + "`" + `` + "`" + `` + "`" + `\nSample request body will be:\n` + "`" + `` + "`" + `` + "`" + `\n{\n  \"queries\": [\n    {\n      \"query\": \"string\"\n    }\n  ],\n  \"dbName\": \"string\",\n  \"dbEndpoint\": \"string\"\n}\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -303,7 +288,7 @@ func init() {
     },
     "/v1/rdss": {
       "get": {
-        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n    \"resourceId\": \"db-IXRXA2XS7KFFA6JWYYWFZEBJDE\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"available\",\n  },\n  {\n    \"resourceId\": \"db-YVS5NRBNHPGJZ3IT3WADXYSWYU\",\n    \"clusterIdentifier\": \"\",\n    \"instanceIdentifier\": \"mysqldb\",\n    \"availabilityZone\": \"us-east-1b\",\n    \"status\" \"backing-up\",\n  },\n  ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
+        "description": "For example:\n` + "`" + `` + "`" + `` + "`" + `\nGET /api/armt/v1/rdss?region=us-east-1b\n` + "`" + `` + "`" + `` + "`" + `\n\nReturns list of rds instances:\n` + "`" + `` + "`" + `` + "`" + `\n[\n  {\n            \"availabilityZone\": \"ap-south-1b\",\n            \"clusterIdentifier\": null,\n            \"dbInstanceClass\": \"db.t2.micro\",\n            \"dbName\": sanjitdb,\n            \"engine\": \"mysql\",\n            \"engineVersion\": \"8.0.16\",\n            \"instanceIdentifier\": \"sanjit-database-1\",\n            \"resourceId\": \"db-PX346I7MRIQVANIZ5XE6UB5YQY\",\n            \"status\": \"available\"\n        },\n        {\n          \"availabilityZone\": \"ap-east-1b\",\n          \"clusterIdentifier\": null,\n          \"dbInstanceClass\": \"db.t3.micro\",\n          \"dbName\": \"sanjitdb2\",\n          \"engine\": \"mysql\",\n          \"engineVersion\": \"8.0.19\",\n          \"instanceIdentifier\": \"sanjit-database-2\",\n          \"resourceId\": \"db-Z5SH5B7G6MF3STWPY75S6RWGY4\",\n          \"status\": \"creating\"\n        },\n        ...\n]\n` + "`" + `` + "`" + `` + "`" + `\n",
         "consumes": [
           "application/json"
         ],
@@ -432,11 +417,8 @@ func init() {
       "description": "Attributes required for RDS queries executions.",
       "type": "object",
       "required": [
-        "region",
-        "dbUser",
         "dbName",
         "dbEndpoint",
-        "iamArn",
         "queries"
       ],
       "properties": {
@@ -448,24 +430,12 @@ func init() {
           "description": "DB Name",
           "type": "string"
         },
-        "dbUser": {
-          "description": "DB User",
-          "type": "string"
-        },
-        "iamArn": {
-          "description": "IAM arn",
-          "type": "string"
-        },
         "queries": {
           "description": "Array of query",
           "type": "array",
           "items": {
             "$ref": "#/definitions/RDSQuery"
           }
-        },
-        "region": {
-          "description": "AWS region",
-          "type": "string"
         }
       }
     }

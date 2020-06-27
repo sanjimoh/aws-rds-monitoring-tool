@@ -5,7 +5,7 @@ build:
 	env GOOS=linux CGO_ENABLED=0 go build -o builds/aws-rds-monitoring-tool cmd/armt-server/main.go
 
 run: build
-	env PORT=30001 AWS_ACCESS_KEY_ID=<access_key_id> AWS_SECRET_ACCESS_KEY=<secret_access_key> AWS_REGION=<aws_region> builds/aws-rds-monitoring-tool
+	env PORT=30001 AWS_ACCESS_KEY_ID=<access_key_id> AWS_SECRET_ACCESS_KEY=<secret_access_key> AWS_REGION=<aws_region> RDS_USER_NAME=<rds_user_name> RDS_PASSWORD=<rds_password> builds/aws-rds-monitoring-tool
 
 swagger-generate-server:
 ifeq ($(SWAGGER), 1)

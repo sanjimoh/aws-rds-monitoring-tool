@@ -23,10 +23,10 @@ func (rmh *RdsMonitoringHandler) GetV1Rdss(awsRegion string) (rdss models.RDSS, 
 }
 
 func (rmh *RdsMonitoringHandler) PostV1RdsQueries(queryExecAttrs *models.RdsQueriesExecAttr) error {
-	queries := make([]string, len(queryExecAttrs.Queries))
+	var queries []string
 	for _, query := range queryExecAttrs.Queries {
 		queries = append(queries, *query.Query)
 	}
 
-	return rmh.awsRdsClient.ExecuteQueries(*queryExecAttrs.Region, *queryExecAttrs.DbUser, *queryExecAttrs.DbName, *queryExecAttrs.DbEndpoint, *queryExecAttrs.IamArn, queries)
+	return rmh.awsRdsClient.ExecuteQueries(*queryExecAttrs.DbName, *queryExecAttrs.DbEndpoint, queries)
 }

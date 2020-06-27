@@ -8,8 +8,9 @@ import (
 type AwsEnvConfig struct {
 	AwsAccessKeyId     string `envconfig:"AWS_ACCESS_KEY_ID" required:"true"`
 	AwsSecretAccessKey string `envconfig:"AWS_SECRET_ACCESS_KEY" required:"true"`
-	AwsSessionToken    string `envconfig:"AWS_SESSION_TOKEN" default:"30" required:"false"`
 	AwsRegion          string `envconfig:"AWS_REGION" required:"true"`
+	RdsUser            string `envconfig:"RDS_USER_NAME" default:"30" required:"true"`
+	RdsPassword        string `envconfig:"RDS_PASSWORD" default:"30" required:"true"`
 }
 
 func ParseEnvConfiguration() (conf *AwsEnvConfig, err error) {

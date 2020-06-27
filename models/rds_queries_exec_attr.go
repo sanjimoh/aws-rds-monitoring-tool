@@ -27,21 +27,9 @@ type RdsQueriesExecAttr struct {
 	// Required: true
 	DbName *string `json:"dbName"`
 
-	// DB User
-	// Required: true
-	DbUser *string `json:"dbUser"`
-
-	// IAM arn
-	// Required: true
-	IamArn *string `json:"iamArn"`
-
 	// Array of query
 	// Required: true
 	Queries []*RDSQuery `json:"queries"`
-
-	// AWS region
-	// Required: true
-	Region *string `json:"region"`
 }
 
 // Validate validates this rds queries exec attr
@@ -56,19 +44,7 @@ func (m *RdsQueriesExecAttr) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateDbUser(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateIamArn(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateQueries(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRegion(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -96,24 +72,6 @@ func (m *RdsQueriesExecAttr) validateDbName(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *RdsQueriesExecAttr) validateDbUser(formats strfmt.Registry) error {
-
-	if err := validate.Required("dbUser", "body", m.DbUser); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *RdsQueriesExecAttr) validateIamArn(formats strfmt.Registry) error {
-
-	if err := validate.Required("iamArn", "body", m.IamArn); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *RdsQueriesExecAttr) validateQueries(formats strfmt.Registry) error {
 
 	if err := validate.Required("queries", "body", m.Queries); err != nil {
@@ -134,15 +92,6 @@ func (m *RdsQueriesExecAttr) validateQueries(formats strfmt.Registry) error {
 			}
 		}
 
-	}
-
-	return nil
-}
-
-func (m *RdsQueriesExecAttr) validateRegion(formats strfmt.Registry) error {
-
-	if err := validate.Required("region", "body", m.Region); err != nil {
-		return err
 	}
 
 	return nil

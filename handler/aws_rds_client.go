@@ -3,20 +3,21 @@ package handler
 import (
 	"aws-rds-monitoring-tool/configuration"
 	"aws-rds-monitoring-tool/models"
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/rds"
-	"github.com/aws/aws-sdk-go/service/rds/rdsutils"
+	"github.com/go-sql-driver/mysql"
 	"log"
 )
 
 type AwsRdsClient struct {
-	awsRegion  string
-	awsSession *session.Session
-	rds        *rds.RDS
+	awsRegion   string
+	rds         *rds.RDS
+	rdsUser     string
+	rdsPassword string
 }
 
 func NewAwsRdsClient(config *configuration.AwsEnvConfig) (*AwsRdsClient, error) {
@@ -24,7 +25,7 @@ func NewAwsRdsClient(config *configuration.AwsEnvConfig) (*AwsRdsClient, error) 
 		Region: &config.AwsRegion}))
 	svc := rds.New(session)
 
-	return &AwsRdsClient{rds: svc, awsRegion: config.AwsRegion, awsSession: session}, nil
+	return &AwsRdsClient{rds: svc, awsRegion: config.AwsRegion, rdsUser: config.RdsUser, rdsPassword: config.RdsPassword}, nil
 }
 
 func (kc *AwsRdsClient) GetAllRds(awsRegion string) (rdss models.RDSS, err error) {
@@ -65,18 +66,13 @@ func (kc *AwsRdsClient) GetAllRds(awsRegion string) (rdss models.RDSS, err error
 	return
 }
 
-func (kc *AwsRdsClient) ExecuteQueries(region string, dbUser string, dbName string, dbEndpoint string, iamArn string, queries []string) error {
-	session := session.Must(session.NewSession(&aws.Config{Region: &region}))
-	credentials := stscreds.NewCredentials(session, iamArn)
-
-	token, err := rdsutils.BuildAuthToken(dbEndpoint, region, dbUser, credentials)
-	if err != nil {
-		return fmt.Errorf("Failed to get auth token for the rds instance: %v", err)
-	}
-
-	dbConnectionStr := fmt.Sprintf("%s:%s@tcp(%s)/%s?tls=true",
-		dbUser, token, dbEndpoint, dbName,
+func (kc *AwsRdsClient) ExecuteQueries(dbName string, dbEndpoint string, queries []string) error {
+	dbConnectionStr := fmt.Sprintf("%s:%s@tcp(%s)/%s?tls=false", kc.rdsUser, kc.rdsPassword,
+		dbEndpoint, dbName,
 	)
+
+	driver := mysql.MySQLDriver{}
+	_ = driver
 
 	db, err := sql.Open("mysql", dbConnectionStr)
 	if err != nil {
@@ -84,7 +80,7 @@ func (kc *AwsRdsClient) ExecuteQueries(region string, dbUser string, dbName stri
 	}
 
 	for _, query := range queries {
-		rows, err := db.Query(query)
+ 		rows, err := db.QueryContext(context.TODO(), query)
 		if err != nil {
 			log.Printf("Query %s exection failed: %v", query, err)
 			continue
@@ -116,6 +112,10 @@ func (kc *AwsRdsClient) ExecuteQueries(region string, dbUser string, dbName stri
 			}
 
 			log.Printf("Retrieved row : %v", data)
+		}
+
+		if err := rows.Err(); err != nil {
+			log.Printf("Error while iterating over rows: %v", err)
 		}
 	}
 

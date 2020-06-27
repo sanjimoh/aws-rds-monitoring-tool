@@ -42,20 +42,28 @@ Returns list of rds instances:
 ```
 [
   {
-    "resourceId": "db-IXRXA2XS7KFFA6JWYYWFZEBJDE",
-    "clusterIdentifier": "",
-    "instanceIdentifier": "mysqldb",
-    "availabilityZone": "us-east-1b",
-    "status" "available",
-  },
-  {
-    "resourceId": "db-YVS5NRBNHPGJZ3IT3WADXYSWYU",
-    "clusterIdentifier": "",
-    "instanceIdentifier": "mysqldb",
-    "availabilityZone": "us-east-1b",
-    "status" "backing-up",
-  },
-  ...
+            "availabilityZone": "ap-south-1b",
+            "clusterIdentifier": null,
+            "dbInstanceClass": "db.t2.micro",
+            "dbName": sanjitdb,
+            "engine": "mysql",
+            "engineVersion": "8.0.16",
+            "instanceIdentifier": "sanjit-database-1",
+            "resourceId": "db-PX346I7MRIQVANIZ5XE6UB5YQY",
+            "status": "available"
+        },
+        {
+          "availabilityZone": "ap-east-1b",
+          "clusterIdentifier": null,
+          "dbInstanceClass": "db.t3.micro",
+          "dbName": "sanjitdb2",
+          "engine": "mysql",
+          "engineVersion": "8.0.19",
+          "instanceIdentifier": "sanjit-database-2",
+          "resourceId": "db-Z5SH5B7G6MF3STWPY75S6RWGY4",
+          "status": "creating"
+        },
+        ...
 ]
 ```
 

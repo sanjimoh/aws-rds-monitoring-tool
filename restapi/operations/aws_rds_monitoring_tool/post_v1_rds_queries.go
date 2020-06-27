@@ -45,11 +45,8 @@ Sample request body will be:
       "query": "string"
     }
   ],
-  "region": "string",
-  "dbUser": "string",
   "dbName": "string",
-  "dbEndpoint": "string",
-  "iamArn": "string"
+  "dbEndpoint": "string"
 }
 ```
 

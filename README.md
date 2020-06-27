@@ -19,24 +19,24 @@ Returns list of rds instances:
           "availabilityZone": "ap-south-1b",
           "clusterIdentifier": null,
           "dbInstanceClass": "db.t2.micro",
-          "dbName": null,
+          "dbName": sanjitdb,
           "engine": "mysql",
           "engineVersion": "8.0.16",
           "instanceIdentifier": "sanjit-database-1",
           "resourceId": "db-PX346I7MRIQVANIZ5XE6UB5YQY",
           "status": "available"
       },
-      {
-          "availabilityZone": "ap-south-1b",
+       {
+          "availabilityZone": "ap-east-1b",
           "clusterIdentifier": null,
-          "dbInstanceClass": "db.t2.micro",
-          "dbName": null,
-          "engine": "mariadb",
-          "engineVersion": "10.3.13",
+          "dbInstanceClass": "db.t3.micro",
+          "dbName": "sanjitdb2",
+          "engine": "mysql",
+          "engineVersion": "8.0.19",
           "instanceIdentifier": "sanjit-database-2",
-          "resourceId": "db-AIET3SIESWBGKV6FGF2VQC4MGY",
-          "status": "available"
-      },
+          "resourceId": "db-Z5SH5B7G6MF3STWPY75S6RWGY4",
+          "status": "creating"
+          },
   ...
 ]
 ```
@@ -49,14 +49,11 @@ Sample request body will be:
 {
   "queries": [
     {
-      "query": "string"
+      "query": "show tables;"
     }
   ],
-  "region": "string",
-  "dbUser": "string",
-  "dbName": "string",
-  "dbEndpoint": "string",
-  "iamArn": "string"
+  "dbName": "sanjitdb2",
+  "dbEndpoint": "sanjit-database-2.rds.amazonaws.com"
 }
 ```
 
@@ -66,6 +63,8 @@ Update Makefile's "run" target and provide the following inputs -
 * AWS_ACCESS_KEY_ID
 * AWS_SECRET_ACCESS_KEY
 * AWS_REGION
+* RDS_USER_NAME
+* RDS_PASSWORD
 ```
 
 After you provided the above details, then you are good to run the application by simply executing -
